@@ -2,7 +2,8 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt  #import pyqt5 widgets and alignment constants
 from PyQt5.QtGui import QIcon  # Import QIcon for icons
-
+from gym_tracker import GymTrackerWindow
+from db_manager import DatabaseManager
 
  # created main application window
 class MainMenu(QMainWindow): 
@@ -24,10 +25,20 @@ class MainMenu(QMainWindow):
             font-weight: bold;
             color: black; 
         """)
+        self.db_manager = DatabaseManager()
+
+
+        
+
 
         # Buttons and icons added
         gymButton = QPushButton("Gym Track")
         gymButton.setIcon(QIcon("gym_icon.png"))
+        gymButton.clicked.connect(self.open_gym_tracker)
+        
+
+
+
         
         flashcardButton = QPushButton("Flashcards")
         flashcardButton.setIcon(QIcon("flashcard_icon.png"))
@@ -74,6 +85,10 @@ class MainMenu(QMainWindow):
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
+    def open_gym_tracker(self):
+        """Open the Gym Tracker window."""
+        self.gym_tracker_window = GymTrackerWindow(self.db_manager)
+        self.gym_tracker_window.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) #create application object to handle event loop
@@ -95,3 +110,4 @@ if __name__ == "__main__":
     window = MainMenu() #create mainmenu instance
     window.show() #display window
     sys.exit(app.exec_()) #start app event loop
+
